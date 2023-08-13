@@ -1,0 +1,10 @@
+.item {
+    display: flex;
+    border: dashed red 2px;
+    padding: 10px;
+    margin: 10px;
+
+    &__title {
+        color: blue;
+    }
+}
