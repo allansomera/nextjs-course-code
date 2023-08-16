@@ -1,19 +1,21 @@
-import { getFeaturedEvents } from "../dummy-data";
-import EventList from "../components/events/event-list";
-import dbConnect from "@lib/utils/dbConfig";
-import Event from "../models/eventsModel";
+import { getFeaturedEvents } from '../dummy-data'
+import EventList from '../components/events/event-list'
+import dbConnect from '@lib/utils/dbConfig'
+import Event from '../models/eventsModel'
+import { getFeaturedEvents_helper, getAllEvents } from '../helpers/api-utils'
 
 function HomePage(props) {
   // const featuredEvents = getFeaturedEvents();
   // console.log("events", props.events);
-
-  const { featuredEvents } = props;
-  console.log(featuredEvents);
+  const { events } = props
+  // console.log('allEvents', getAllEvents())
+  // console.log('featuredEvents', getFeaturedEvents_helper())
+  // console.log(featuredEvents)
   return (
     <div>
-      <EventList items={featuredEvents} />
+      <EventList items={events} />
     </div>
-  );
+  )
 }
 
 // export const getServerSideProps = async () => {
@@ -41,25 +43,27 @@ function HomePage(props) {
 
 export const getStaticProps = async () => {
   try {
-    console.log("CONNECTING TO MONGO");
-    await dbConnect();
-    console.log("CONNECTED TO MONGO");
-
-    console.log("FETCHING DOCUMENTS");
-    const events = await Event.find();
-    console.log("FETCHED DOCUMENTS");
+    // console.log('CONNECTING TO MONGO')
+    // await dbConnect()
+    // console.log('CONNECTED TO MONGO')
+    // console.log('FETCHING DOCUMENTS')
+    // const events = await Event.find()
+    // console.log('events promise:', events)
+    // console.log('FETCHED DOCUMENTS')
+    const featuredEvents = await getFeaturedEvents_helper()
 
     return {
       props: {
-        featuredEvents: JSON.parse(JSON.stringify(events)),
+        events: featuredEvents,
       },
-    };
+      revalidate: 1800,
+    }
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return {
       notFound: true,
-    };
+    }
   }
-};
+}
 
-export default HomePage;
+export default HomePage

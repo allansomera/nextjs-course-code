@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models } from 'mongoose'
 
 const eventsSchema = new Schema({
   title: String,
@@ -7,8 +7,8 @@ const eventsSchema = new Schema({
   date: String,
   image: String,
   isFeatured: Boolean,
-});
+})
 
-const Event = models.Event || model("Event", eventsSchema);
+const Event = models?.Event || model('Event', eventsSchema)
 
-export default Event;
+export default Event
