@@ -33,6 +33,7 @@ export const getStaticProps = async () => {
       props: {
         events: allEvents,
       },
+      revalidate: 60,
     }
   } catch (error) {
     console.log(error)
