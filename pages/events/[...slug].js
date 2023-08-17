@@ -6,6 +6,7 @@ import { getFilteredEvents } from '../../helpers/api-utils'
 import ResultsTitle from '../../components/events/results-title'
 import Button from '../../components/ui/button'
 import ErrorAlert from '../../components/ui/error-alert'
+import Head from 'next/head'
 
 function FilteredEventsPage(props) {
   const router = useRouter()
@@ -18,13 +19,29 @@ function FilteredEventsPage(props) {
   const numYear = +filteredYear
   const numMonth = +filteredMonth
 
+  const pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="discription"
+        content={`All events for ${numMonth}/${numYear}.`}
+      />
+    </Head>
+  )
+
   if (!filterData) {
-    return <p className="center">Loading...</p>
+    return (
+      <Fragment>
+        {pageHeadData}
+        <p className="center">Loading...</p>
+      </Fragment>
+    )
   }
 
   if (props.hasError) {
     return (
       <Fragment>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events found for the chosen filter!</p>
         </ErrorAlert>
@@ -40,6 +57,7 @@ function FilteredEventsPage(props) {
   const date = new Date(props.date.year, props.date.month - 1)
   return (
     <Fragment>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </Fragment>
