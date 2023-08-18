@@ -1,7 +1,11 @@
 import dbConnect from '@lib/utils/dbConfig'
-import Feedback from '../../models/feedbacksModel'
+import Feedback from '../../../models/feedbacksModel'
 
-const messageHandler = async (req, res) => {
+export const getAllFeedbacks = async () => {
+  return await Feedback.find({})
+}
+
+const feedbackHandler = async (req, res) => {
   await dbConnect()
   if (req.method === 'POST') {
     await Feedback.create({
@@ -14,7 +18,8 @@ const messageHandler = async (req, res) => {
       feedback: req.body.message,
     })
   } else {
-    const fb = await Feedback.find({})
+    // const fb = await Feedback.find({})
+    const fb = await getAllFeedbacks()
     console.log(fb)
     res.status(200).json({
       feedbacks: fb,
@@ -22,4 +27,4 @@ const messageHandler = async (req, res) => {
   }
 }
 
-export default messageHandler
+export default feedbackHandler

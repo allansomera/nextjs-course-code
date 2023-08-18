@@ -12,6 +12,7 @@
     "skipLibCheck": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "baseUrl": ".",
     "paths": {
       "@lib/*": ["./lib/*"]
     }
