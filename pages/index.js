@@ -4,6 +4,7 @@ import dbConnect from '@lib/utils/dbConfig'
 import Event from '../models/eventsModel'
 import { getFeaturedEvents_helper, getAllEvents } from '../helpers/api-utils'
 import NewsletterRegistration from '../components/input/newsletter-registration'
+import Head from 'next/head'
 
 function HomePage(props) {
   // const featuredEvents = getFeaturedEvents();
