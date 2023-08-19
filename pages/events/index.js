@@ -1,19 +1,20 @@
-import { Fragment } from 'react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
+import { Fragment } from 'react'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
 
-import { getAllEvents } from '../../helpers/api-util';
-import EventList from '../../components/events/event-list';
-import EventsSearch from '../../components/events/events-search';
+// import { getAllEvents } from '../../dummy-data';
+import EventList from '../../components/events/event-list'
+import EventsSearch from '../../components/events/events-search'
+import { getAllEvents } from '../../helpers/api-utils'
 
 function AllEventsPage(props) {
-  const router = useRouter();
-  const { events } = props;
+  const router = useRouter()
+  // const events = getAllEvents();
 
   function findEventsHandler(year, month) {
-    const fullPath = `/events/${year}/${month}`;
+    const fullPath = `/events/${year}/${month}`
 
-    router.push(fullPath);
+    router.push(fullPath)
   }
 
   return (
@@ -24,25 +25,32 @@ function AllEventsPage(props) {
       <Head>
         <title>All Events</title>
         <meta
-          name='description'
-          content='Find a lot of great events that allow you to evolve...'
+          name="description"
+          content="Find a lot of great events that allow you to evolve..."
         />
       </Head>
       <EventsSearch onSearch={findEventsHandler} />
-      <EventList items={events} />
+      <EventList items={props.events} />
     </Fragment>
-  );
+  )
 }
 
-export async function getStaticProps() {
-  const events = await getAllEvents();
+export const getStaticProps = async () => {
+  try {
+    const allEvents = await getAllEvents()
+    console.log('allEvents:', allEvents)
 
-  return {
-    props: {
-      events: events,
-    },
-    revalidate: 60
-  };
+    return {
+      props: {
+        events: allEvents,
+      },
+      revalidate: 60,
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      notFound: true,
+    }
+  }
 }
-
-export default AllEventsPage;
+export default AllEventsPage
