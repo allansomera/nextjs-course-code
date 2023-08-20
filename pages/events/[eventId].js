@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import Head from 'next/head'
@@ -6,6 +6,7 @@ import EventSummary from '../../components/event-detail/event-summary'
 import EventLogistics from '../../components/event-detail/event-logistics'
 import EventContent from '../../components/event-detail/event-content'
 import ErrorAlert from '../../components/ui/error-alert'
+import Comments from '../../components/input/comments'
 import {
   getEventById,
   getAllEvents,
@@ -14,6 +15,7 @@ import {
 
 function EventDetailPage(props) {
   const event = props.selectedEvent
+  const comments = props.comments_by_eventId
   if (!event) {
     return (
       <div className="center">
@@ -48,6 +50,7 @@ export const getStaticProps = async (context) => {
     const { params } = context
     const id = params.eventId
     const event = await getEventById(id)
+    // const comments = await commentsById(id)
 
     return {
       props: {

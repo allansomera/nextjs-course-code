@@ -1,9 +1,19 @@
-import classes from './comment-list.module.css';
+import classes from './comment-list.module.css'
 
-function CommentList() {
+function CommentList({ comments_by_event_id }) {
+  // console.log('comments by id: ', comments_by_event_id)
   return (
     <ul className={classes.comments}>
-      {/* Render list of comments - fetched from API */}
+      {comments_by_event_id.reverse().map((comment) => {
+        return (
+          <li key={comment._id}>
+            <p>{comment.text}</p>
+            <div>
+              By <address>{comment.name}</address>
+            </div>
+          </li>
+        )
+      })}
       <li>
         <p>My comment is amazing!</p>
         <div>
@@ -17,7 +27,7 @@ function CommentList() {
         </div>
       </li>
     </ul>
-  );
+  )
 }
 
-export default CommentList;
+export default CommentList

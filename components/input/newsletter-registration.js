@@ -1,9 +1,15 @@
-import classes from './newsletter-registration.module.css';
+import classes from './newsletter-registration.module.css'
+import { useRef } from 'react'
+import axios from 'axios'
 
 function NewsletterRegistration() {
+  let emailRef = useRef()
   function registrationHandler(event) {
-    event.preventDefault();
+    event.preventDefault()
 
+    axios.post('/api/newsletter/register', {
+      email: emailRef.current.value,
+    })
     // fetch user input (state or refs)
     // optional: validate input
     // send valid data to API
@@ -15,16 +21,17 @@ function NewsletterRegistration() {
       <form onSubmit={registrationHandler}>
         <div className={classes.control}>
           <input
-            type='email'
-            id='email'
-            placeholder='Your email'
-            aria-label='Your email'
+            type="email"
+            id="email"
+            placeholder="Your email"
+            aria-label="Your email"
+            ref={emailRef}
           />
           <button>Register</button>
         </div>
       </form>
     </section>
-  );
+  )
 }
 
-export default NewsletterRegistration;
+export default NewsletterRegistration

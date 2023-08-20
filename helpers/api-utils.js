@@ -1,5 +1,6 @@
 import dbConnect from '@lib/utils/dbConfig'
 import Event from '../models/eventsModel'
+import Comment from '../models/commentsModel'
 
 export const getAllEvents = async () => {
   try {
@@ -55,4 +56,18 @@ export const getFilteredEvents = async (dateFilter) => {
   })
 
   return filteredEvents
+}
+
+export const getCommentsById = async (eventid) => {
+  try {
+    await dbConnect()
+    const comments = await Comment.find({ event_id: eventid })
+    const allComments_by_id = JSON.parse(JSON.stringify(comments))
+
+    return allComments_by_id
+  } catch (error) {
+    return {
+      notFound: true,
+    }
+  }
 }
