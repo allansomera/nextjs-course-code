@@ -36,7 +36,7 @@ function NewComment(props) {
       text: enteredComment,
     })
 
-    formRef.current.reset
+    formRef.current.reset()
   }
 
   return (

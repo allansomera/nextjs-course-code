@@ -4,6 +4,7 @@ import CommentList from './comment-list'
 import NewComment from './new-comment'
 import classes from './comments.module.css'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 function Comments(props) {
   const { eventId } = props
@@ -27,9 +28,46 @@ function Comments(props) {
   }
 
   function addCommentHandler(commentData) {
-    axios.post(`/api/comment/add/${eventId}`, {
-      data: { ...commentData },
-    })
+    // axios.post(`/api/comment/add/${eventId}`, {
+    //   data: { ...commentData },
+    // })
+
+    toast.promise(
+      axios.post(`/api/comment/add/${eventId}`, {
+        data: { ...commentData },
+      }),
+      {
+        pending: {
+          render() {
+            return 'Posting comment...'
+          },
+          icon: false,
+          position: 'bottom-center',
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        },
+        success: {
+          render() {
+            return 'Comment Posted!'
+          },
+          // other options
+          icon: false,
+          position: 'bottom-center',
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        },
+      }
+    )
     setComment((prev) => ({ ...prev, ...commentData }))
   }
 
