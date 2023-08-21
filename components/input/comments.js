@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 
 import CommentList from './comment-list'
 import NewComment from './new-comment'
 import classes from './comments.module.css'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import NotificationContext from '../../store/notification-context'
 
 function Comments(props) {
   const { eventId } = props
@@ -12,12 +13,16 @@ function Comments(props) {
   const [showComments, setShowComments] = useState(false)
   const [comments_by_event_id, set_comments_by_event_id] = useState([])
   const [comment, setComment] = useState({})
+  const [isFetchingComments, setIsFetchingComments] = useState(false)
+  const commentCtx = useContext(NotificationContext)
 
   useEffect(() => {
     const comment_data = async () => {
+      setIsFetchingComments(true)
       let { data } = await axios.get(`/api/comment/add/${eventId}`)
-      console.log('data', data)
+      console.log('fetching data', data)
       set_comments_by_event_id(data)
+      setIsFetchingComments(false)
     }
     // if (Object.keys(comment).length === 0 || showComments) {
     comment_data()
@@ -39,6 +44,11 @@ function Comments(props) {
       {
         pending: {
           render() {
+            commentCtx.showNotification({
+              title: 'posting comment...',
+              message: 'Posted comment',
+              status: 'pending',
+            })
             return 'Posting comment...'
           },
           icon: false,
@@ -53,6 +63,11 @@ function Comments(props) {
         },
         success: {
           render() {
+            commentCtx.showNotification({
+              title: 'Comment posted',
+              message: 'Successfully posted comment!',
+              status: 'success',
+            })
             return 'Comment Posted!'
           },
           // other options
@@ -77,9 +92,10 @@ function Comments(props) {
         {showComments ? 'Hide' : 'Show'} Comments
       </button>
       {showComments && <NewComment onAddComment={addCommentHandler} />}
-      {showComments && (
+      {showComments && !isFetchingComments && (
         <CommentList comments_by_event_id={comments_by_event_id} />
       )}
+      {showComments && isFetchingComments && <p>Loading...</p>}
     </section>
   )
 }

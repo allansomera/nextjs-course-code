@@ -1,16 +1,23 @@
 import classes from './newsletter-registration.module.css'
-import { useRef } from 'react'
+import { useRef, useContext } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import NotificationContext from '../../store/notification-context'
 
 function NewsletterRegistration() {
   let emailRef = useRef()
+  let newsletterCtx = useContext(NotificationContext)
 
   function registrationHandler(event) {
     event.preventDefault()
 
     // axios.post('/api/newsletter/register', {
     //   email: emailRef.current.value,
+    // })
+    // notificationCtx.showNotification({
+    //   title: 'signing up...',
+    //   message: 'Registering for newsletter.',
+    //   status: 'pending',
     // })
 
     toast.promise(
@@ -20,6 +27,11 @@ function NewsletterRegistration() {
       {
         pending: {
           render() {
+            newsletterCtx.showNotification({
+              title: 'signing up...',
+              message: 'Registering for newsletter.',
+              status: 'pending',
+            })
             return 'Registering to newsletter...'
           },
           icon: false,
@@ -34,6 +46,11 @@ function NewsletterRegistration() {
         },
         success: {
           render() {
+            newsletterCtx.showNotification({
+              title: 'Success!',
+              message: 'Registered to newsletter.',
+              status: 'success',
+            })
             return 'Registered!'
           },
           // other options
@@ -52,6 +69,7 @@ function NewsletterRegistration() {
     //toast here
     // toast
     // console.log(res)
+
     emailRef.current.value = ''
   }
 
