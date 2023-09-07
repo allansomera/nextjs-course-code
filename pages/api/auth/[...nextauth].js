@@ -4,7 +4,7 @@ import User from '@models/usersModel'
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 
-export default NextAuth = {
+export default NextAuth({
   session: {
     jwt: true,
   },
@@ -25,8 +25,9 @@ export default NextAuth = {
           throw new Error('could not log you in')
         }
 
+        console.log('Logged in...')
         return { email: user.email }
       },
     }),
   ],
-}
+})

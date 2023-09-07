@@ -1,6 +1,6 @@
 import { hashPassword } from '@lib/auth'
 import dbConnect from '@lib/mongo/dbConfig'
-import Signup from '@models/signupModel'
+// import Signup from '@models/signupModel'
 import User from '@models/usersModel'
 
 const signupHandler = async (req, res) => {
