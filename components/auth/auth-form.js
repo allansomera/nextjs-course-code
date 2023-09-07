@@ -28,6 +28,7 @@ function AuthForm() {
     console.log('response: ', response)
     if (response.status === 201) {
       console.log('Created user data: ', response.data)
+      return response
     } else {
       console.log('Something went wrong')
       // return data
@@ -53,7 +54,16 @@ function AuthForm() {
       console.log(result)
     } else {
       try {
-        await createUser()
+        const response = await createUser()
+        if (response.status == 201) {
+          const result = await signIn('credentials', {
+            redirect: false,
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+          })
+          router.replace('/profile')
+        }
+
         // console.log('result: ', result)
       } catch (error) {
         console.log(error)
